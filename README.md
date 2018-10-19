@@ -3,6 +3,7 @@ Deploy environment for running Ethereum node with Babble consensus.
 
 ## Prerequisites
 1. Install the Docker
+2. Install the Terraform
 
 ## Manage Enviroment
 
