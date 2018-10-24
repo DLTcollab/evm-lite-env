@@ -8,8 +8,10 @@ IPADD = 0
 
 up: conf start
 
+build-docker-image:
+	$(MAKE) -C build docker
+
 conf:
-	docker pull -a capjupiter/evm-lite
 	$(MAKE) -C conf/$(CONSENSUS) conf NODES=$(NODES) IPBASE=$(IPBASE) IPADD=$(IPADD)
 
 start: 
@@ -18,5 +20,5 @@ start:
 stop:
 	$(MAKE) -C terraform/ destroy
 
-.PHONY: up conf start stop
+.PHONY: up conf start stop build-docker-image
 	
