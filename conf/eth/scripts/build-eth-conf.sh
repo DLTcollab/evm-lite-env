@@ -65,7 +65,6 @@ do
     # use a Docker container to run the geth command that creates accounts. This
 	# saves us the trouble of installing geth locally
     docker run --rm \
-		-u `id -u $USER` \
 		-v $dest:/datadir \
 		-v $PASS:/pwd.txt \
 		ethereum/client-go -verbosity=1 --datadir=/datadir --password=/pwd.txt account new  | \
