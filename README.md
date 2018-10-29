@@ -6,7 +6,7 @@ Deploy environment for running Ethereum node with Babble consensus.
 2. Install the Terraform
 3. Initialize the Terraform
 ```shell
-$ cd evm-lite-env/deploy/terraform/local
+$ cd evm-lite-env/terraform/local
 $ terraform init
 ```
 
@@ -14,10 +14,10 @@ $ terraform init
 
 ### Launch Docker
 ```bash
-deploy $ make NODES=[Number of nodes] # e.g.make NODES=4
+$ make NODES=[Number of nodes] # e.g.make NODES=4
 ```
 
 ### Stop Docker
 ```bash
-deploy $ make stop
+$ make stop
 ```
