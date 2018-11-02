@@ -14,9 +14,12 @@ $ terraform init
 
 ### Launch Docker
 ```bash
-$ make NODES=[Number of nodes] # e.g.make NODES=4
+$ make CONSENSUS=[consensus] NODES=[Number of nodes] 
+# e.g.make CONSENSUS=babble NODES=4
 ```
-
+Parameters :
+-   CONSENSUS : solo, babble
+-   NODES: number of nodes in the network
 ### Stop Docker
 ```bash
 $ make stop

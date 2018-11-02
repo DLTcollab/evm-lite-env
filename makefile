@@ -1,7 +1,7 @@
 ENV = local  
 VERSION = 0.1.1 # evm-lite Docker Image
 USER = 1000 # user that run evml inside the docker containers. (try 501 in MacOS)
-CONSENSUS = babble 
+CONSENSUS = babble # babble or solo
 NODES = 1
 IPBASE = node 
 IPADD = 0 
