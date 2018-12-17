@@ -5,18 +5,8 @@ prompt = require('prompt');
 EVMBabbleClient = require('./evm-babble-client.js');
 Contract = require('./contract-lite.js');
 Accounts = require('web3-eth-accounts');
-var accounts = new Accounts('');
-var fs = require('fs');
-var readline = require('readline');
-
-//------------------------------------------------------------------------------
-
-FgRed = "\x1b[31m"
-FgYellow = "\x1b[33m"
-
-log = function (color, text) {
-    console.log(color + text + '\x1b[0m');
-}
+let accounts = new Accounts('');
+let fs = require('fs');
 
 //------------------------------------------------------------------------------
 
@@ -34,12 +24,12 @@ function DemoNode(name, host, port) {
 
 //------------------------------------------------------------------------------
 
-var _demoNodes = [];
-var _keystore = '';
-var _pwdFile = '';
-var _contractName = '';
-var _contractFile = '';
-var program = require('commander');
+let _demoNodes = [];
+let _keystore = '';
+let _pwdFile = '';
+let _contractName = '';
+let _contractFile = '';
+let program = require('commander');
 
 //------------------------------------------------------------------------------
 
@@ -52,18 +42,28 @@ program
     .option('--pwd <value>')
     .parse(process.argv);
 
-//------------------------------------------------------------------------------
+//WIP---------------------------------------------------------------------------
 
+function deploy_contract(ips, port, contractName, contractPath, keystore, pwd) {
+    this.ips = ips
+    this.port = port
+    this.contractName = contractName
+    this.contractPath = contractPath
+    this.keystore = keystore
+    this.pwd = pwd
+}
+
+//------------------------------------------------------------------------------
 init = function () {
-    var ips = readIpsStore(program.ips);
-    var port = program.port;
+    let ips = readIpsStore(program.ips);
+    let port = program.port;
     _contractName = program.contractName;
     _contractFile = program.contractPath;
     _keystore = program.keystore;
     _pwdFile = program.pwd;
 
-    var keystoreArray = readKeyStore(_keystore);
-    var pwd = readPassFile(_pwdFile);
+    let keystoreArray = readKeyStore(_keystore);
+    let pwd = readPassFile(_pwdFile);
     _wallet = accounts.wallet.decrypt(keystoreArray, pwd);
 
     return new Promise((resolve, reject) => {
@@ -79,17 +79,17 @@ init = function () {
 }
 
 readIpsStore = function (path) {
-    var fs = require('fs');
-    var contents = fs.readFileSync('../terraform/local/ips.dat', 'utf8');
-    var re = /(\d+\.\d+\.\d+\.\d+)/gm;
-    var found = contents.match(re);
+    let fs = require('fs');
+    let contents = fs.readFileSync('../terraform/local/ips.dat', 'utf8');
+    let re = /(\d+\.\d+\.\d+\.\d+)/gm;
+    let found = contents.match(re);
 
     return found
 }
 
 readKeyStore = function (dir) {
 
-    var keystore = []
+    let keystore = []
 
     files = fs.readdirSync(dir)
 
@@ -124,7 +124,7 @@ deployContract = function (from, contractFile, contractName, args) {
     contract = new Contract(contractFile, contractName)
     contract.compile()
 
-    var constructorParams = contract.encodeConstructorParams(args)
+    let constructorParams = contract.encodeConstructorParams(args)
 
     tx = {
         from: from.accounts[0].address,
@@ -177,4 +177,4 @@ init()
         console.log("\n" + "Smart Contract Address : " + contract.address)
     })
 
-    .catch((err) => log(FgRed, err))
+    .catch((err) => console.log(err))

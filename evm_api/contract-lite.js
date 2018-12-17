@@ -9,7 +9,7 @@ coder = require('web3/lib/solidity/coder.js');
 
 function Contract(file, name) {
     this.file = file
-    this.name = ':'+name //solc does this for some reason
+    this.name = ':'+name
     this.bytecode = ''
     this.abi = ''
 }
@@ -17,11 +17,9 @@ function Contract(file, name) {
 Contract.prototype.compile = function() {
     input = fs.readFileSync(this.file)
     output = solc.compile(input.toString(), 1)
-    //console.log("---------Samrt Contarct Compile Output-----------" + 
-    //            "\n" , output, "\n" +
-    //            "---------Samrt Contarct Compile Output-----------")
     this.bytecode =  output.contracts[this.name].bytecode
     this.abi = output.contracts[this.name].interface
+    console.log(this.abi)
     this.w3 = web3.eth.contract(JSONbig.parse(this.abi)).at('');
 }
 
@@ -47,12 +45,9 @@ Contract.prototype.parseOutput = function(funcName, output) {
 
 Contract.prototype.parseLogs = function(logs) {
     let c = this
-    // pattern similar to lib/web3/contract.js:  addEventsToContract()
     let decoders = c.w3.abi.filter(function (json) {
         return json.type === 'event';
     }).map(function(json) {
-        // note first and third params required only by enocde and execute;
-        // so don't call those!
         return new SolidityEvent(null, json, null);
     })
 

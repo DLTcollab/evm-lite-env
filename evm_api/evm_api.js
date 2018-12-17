@@ -2,10 +2,12 @@ const fs = require('fs')
 const express = require('express')
 const multer = require('multer')
 const request = require('request')
+const InvokeContract = require('./invoke.js')
 const exec = require("child_process").exec;
 const app = express()
 
 contract_storage_path = './contract_file/'
+let _cfContract
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -27,11 +29,11 @@ app.post('/contract_upload', upload.single('contract'), function (req, res, next
     const ips = '\"../terraform/ips.dat\"'
     const port = '\"8080\"'
     const contract_name = '\"' + file.originalname.split('.')[0] + '\"'
-    const contract_path = '\"' + '../evm_api/contract_file/' + file.originalname + '\"'
+    const contract_path = '\"' + './contract_file/' + file.originalname + '\"'
     const keystore = '\"' + '../conf/' + mode + '/conf/keystore' + '\"'
     const pwd = '\"' + '../conf/eth/pwd.txt' + '\"'
     
-    const deploy_command = 'node ../nodejs/deploy_smartcontract.js' +
+    const deploy_command = 'node ./deploy.js' +
         ' --ips=' + ips +
         ' --port=' + port +
         ' --contractName=' + contract_name +
@@ -57,6 +59,20 @@ app.post('/contract_upload', upload.single('contract'), function (req, res, next
 })
 
 // Invoke exist smart contract
+app.post('/invoke/:address/:abi', function (req, res, next) {
+    const contract_address = (req.param.address)
+    console.log(contract_address)
+    const contract_abi = (req.param.abi)
+    console.log(contract_abi)
+
+    _cfContract = new InvokeContract(contract_abi)
+    _cfContract.w3_creation()
+    _cfContract.address = contract_address
+
+    res.send(_cfContract)
+})
+
+app.listen(3000)
 
 // Get Accounts amount
 app.post('/getAccounts/:nodeip', function (req, res, next) {
