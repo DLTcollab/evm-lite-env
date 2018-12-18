@@ -1,17 +1,20 @@
-util = require('util');
-path = require("path");
-JSONbig = require('json-bigint');
-prompt = require('prompt');
-EVMBabbleClient = require('./evm-babble-client.js');
-Contract = require('./contract-lite.js');
-Accounts = require('web3-eth-accounts');
-let accounts = new Accounts('');
-let fs = require('fs');
+const util = require('util')
+const path = require('path')
+const JSONbig = require('json-bigint')
+const prompt = require('prompt')
+const EVMBabbleClient = require('./evm-babble-client.js')
+const Contract = require('./contract-lite.js')
+const Accounts = require('web3-eth-accounts')
+const program = require('commander')
+const fs = require('fs')
+
+let contract
+let accounts = new Accounts('')
 
 //------------------------------------------------------------------------------
 
-sleep = function (time) {
-    return new Promise((resolve) => setTimeout(resolve, time));
+const sleep = function (time) {
+    return new Promise((resolve) => setTimeout(resolve, time))
 }
 
 //------------------------------------------------------------------------------
@@ -24,23 +27,22 @@ function DemoNode(name, host, port) {
 
 //------------------------------------------------------------------------------
 
-let _demoNodes = [];
-let _keystore = '';
-let _pwdFile = '';
-let _contractName = '';
-let _contractFile = '';
-let program = require('commander');
-
+let _demoNodes = []
+let _keystore = ''
+let _pwdFile = ''
+let _contractName = ''
+let _contractFile = ''
+let _wallet
 //------------------------------------------------------------------------------
 
 program
-    .option('--ips <value>', )
-    .option('--port <value>', )
+    .option('--ips <value>')
+    .option('--port <value>')
     .option('--contractName <value>')
     .option('--contractPath <value>')
     .option('--keystore <value>')
     .option('--pwd <value>')
-    .parse(process.argv);
+    .parse(process.argv)
 
 //WIP---------------------------------------------------------------------------
 
@@ -54,99 +56,100 @@ function deploy_contract(ips, port, contractName, contractPath, keystore, pwd) {
 }
 
 //------------------------------------------------------------------------------
-init = function () {
-    let ips = readIpsStore(program.ips);
-    let port = program.port;
-    _contractName = program.contractName;
-    _contractFile = program.contractPath;
-    _keystore = program.keystore;
-    _pwdFile = program.pwd;
+const init = function () {
+    let ips = readIpsStore(program.ips)
+    let port = program.port
+    _contractName = program.contractName
+    _contractFile = program.contractPath
+    _keystore = program.keystore
+    _pwdFile = program.pwd
 
-    let keystoreArray = readKeyStore(_keystore);
-    let pwd = readPassFile(_pwdFile);
-    _wallet = accounts.wallet.decrypt(keystoreArray, pwd);
+    let keystoreArray = readKeyStore(_keystore)
+    let pwd = readPassFile(_pwdFile)
+    _wallet = accounts.wallet.decrypt(keystoreArray, pwd)
 
-    return new Promise((resolve, reject) => {
-        for (i = 0; i < ips.length; i++) {
-            demoNode = new DemoNode(
+    return new Promise((resolve) => {
+        for (let i = 0; i < ips.length; i++) {
+            let demoNode = new DemoNode(
                 util.format('node%d', i + 1),
                 ips[i],
-                port);
-            _demoNodes.push(demoNode);
+                port)
+            _demoNodes.push(demoNode)
         }
         resolve()
-    });
+    })
 }
 
-readIpsStore = function (path) {
-    let fs = require('fs');
-    let contents = fs.readFileSync('../terraform/local/ips.dat', 'utf8');
-    let re = /(\d+\.\d+\.\d+\.\d+)/gm;
-    let found = contents.match(re);
+const readIpsStore = function () {
+    let fs = require('fs')
+    let contents = fs.readFileSync('../terraform/local/ips.dat', 'utf8')
+    let re = /(\d+\.\d+\.\d+\.\d+)/gm
+    let found = contents.match(re)
 
     return found
 }
 
-readKeyStore = function (dir) {
+const readKeyStore = function (dir) {
 
     let keystore = []
 
-    files = fs.readdirSync(dir)
+    const files = fs.readdirSync(dir)
 
-    for (i = 0, len = files.length; i < len; ++i) {
+    for (let i = 0, len = files.length; i < len; ++i) {
 
-        filepath = path.join(dir, files[i]);
+        let filepath = path.join(dir, files[i])
         if (fs.lstatSync(filepath).isDirectory()) {
-            filepath = path.join(filepath, files[i]);
+            filepath = path.join(filepath, files[i])
         }
 
-        keystore.push(JSON.parse(fs.readFileSync(filepath)));
+        keystore.push(JSON.parse(fs.readFileSync(filepath)))
 
     }
 
-    return keystore;
+    return keystore
 
 }
 
-readPassFile = function (path) {
-    return fs.readFileSync(path, 'utf8');
+const readPassFile = function (path) {
+    return fs.readFileSync(path, 'utf8')
 }
 
-getControlledAccounts = function () {
+const getControlledAccounts = function () {
     return Promise.all(_demoNodes.map(function (node) {
         return node.api.getAccounts().then((accs) => {
-            node.accounts = JSONbig.parse(accs).accounts;
-        });
-    }));
+            node.accounts = JSONbig.parse(accs).accounts
+        })
+    }))
 }
 
-deployContract = function (from, contractFile, contractName, args) {
-    contract = new Contract(contractFile, contractName)
+const deployContract = function (from, contractFile, contractName, args) {
+    let contract = new Contract(contractFile, contractName)
     contract.compile()
 
     let constructorParams = contract.encodeConstructorParams(args)
 
-    tx = {
+    const tx = {
         from: from.accounts[0].address,
         gas: 1000000,
         gasPrice: 0,
         data: contract.bytecode + constructorParams
     }
 
-    stx = JSONbig.stringify(tx)
+    const stx = JSONbig.stringify(tx)
 
     return from.api.sendTx(stx).then((res) => {
-            txHash = JSONbig.parse(res).txHash.replace("\"", "")
-            return txHash
-        })
+        const txHash = JSONbig.parse(res).txHash.replace('\'', '')
+        return txHash
+    })
         .then((txHash) => {
             return sleep(2000).then(() => {
                 return from.api.getReceipt(txHash)
             })
         })
         .then((receipt) => {
-            address = JSONbig.parse(receipt).contractAddress
+            const address = JSONbig.parse(receipt).contractAddress
             contract.address = address
+            console.log('ABI : \n' + contract.abi + '\nSmart Contract Address : \n' + contract.address)
             return contract
         })
 
@@ -166,15 +169,14 @@ init()
     .then(() => {
         return deployContract(_demoNodes[0], _contractFile, _contractName, [1000])
     })
-    .then((contract) => {
+    .then(() => {
         return new Promise((resolve) => {
-            _cfContract = contract;
-            resolve();
+            resolve()
         })
     })
 
     .then(() => {
-        console.log("\n" + "Smart Contract Address : " + contract.address)
+        
     })
 
     .catch((err) => console.log(err))
