@@ -5,15 +5,15 @@ const SolidityEvent = require('web3/lib/web3/event.js')
 
 const web3 = new Web3()
 
-function Interact_contract(abi) {
+function interact_contract(abi) {
     this.abi = abi
 }
 
-Interact_contract.prototype.w3_creation = function () {
+interact_contract.prototype.w3_creation = function () {
     this.w3 = web3.eth.contract(JSONbig.parse(this.abi)).at('')
 }
 
-Interact_contract.prototype.parseOutput = function (funcName, output) {
+interact_contract.prototype.parseOutput = function (funcName, output) {
     const funcDef = this.w3.abi.find(function (json) {
         return json.type === 'function' && json.name === funcName
     })
@@ -21,7 +21,7 @@ Interact_contract.prototype.parseOutput = function (funcName, output) {
     return func.unpackOutput(output)
 }
 
-Interact_contract.prototype.parseLogs = function (logs) {
+interact_contract.prototype.parseLogs = function (logs) {
     let c = this
     let decoders = c.w3.abi.filter(function (json) {
         return json.type === 'event'
@@ -55,4 +55,4 @@ Interact_contract.prototype.parseLogs = function (logs) {
     })
 }
 
-module.exports = Interact_contract
+module.exports = interact_contract

@@ -2,12 +2,13 @@ const fs = require('fs')
 const express = require('express')
 const multer = require('multer')
 const request = require('request')
-const InteractContract = require('./interact.js')
+const InteractContract = require('./interact/interact.js')
 const exec = require('child_process').exec
+const bodyParser = require('body-parser')
+const urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 const app = express()
 const contract_storage_path = './contract_file/'
-//let _cfContract
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -22,21 +23,36 @@ const upload = multer({
     storage: storage
 })
 
-// Interact exist smart contract
-/*
-app.post('/Interact/:address/:abi', function (req, res, next) {
-    const contract_address = (req.param.address)
-    console.log(contract_address)
-    const contract_abi = (req.param.abi)
-    console.log(contract_abi)
-
-    _cfContract = new InteractContract(contract_abi)
-    _cfContract.w3_creation()
-    _cfContract.address = contract_address
-
-    res.send(_cfContract)
+// Contract interact page
+app.get('/interact', function (req, res) {
+    const interact_web = fs.readFileSync('./interact.html', {
+        encoding: 'utf8'
+    })
+    res.send(interact_web)
 })
-*/
+
+// Interact exist smart contract
+app.post('/interact_contract',urlencodedParser, function(req, res) {
+    console.log('Contract Address : \n' + req.body.address + '\n')
+    console.log('ABI Interface : \n' + req.body.abi + '\n')
+
+    const _cfContract = new InteractContract(req.body.abi)
+    _cfContract.w3_creation()
+    _cfContract.address = req.body.address
+
+    console.log('Contract Object :')
+    console.log(_cfContract)
+
+    res.json(_cfContract)
+})
+
+// Contract upload page
+app.get('/deploy', function (req, res) {
+    const deploy_web = fs.readFileSync('./deploy.html', {
+        encoding: 'utf8'
+    })
+    res.send(deploy_web)
+})
 
 // Deploy Contract
 app.post('/contract_upload', upload.single('contract'), function (req, res) {
@@ -49,7 +65,7 @@ app.post('/contract_upload', upload.single('contract'), function (req, res) {
     const keystore = `'../conf/${mode}/conf/keystore'`
     const pwd = '\'../conf/eth/pwd.txt\''
     
-    const deploy_command = `node ./deploy.js --ips=${ips} --port=${port} --contractName=${contract_name} --contractPath=${contract_path} --keystore=${keystore} --pwd=${pwd}`
+    const deploy_command = `node ./deploy/deploy.js --ips=${ips} --port=${port} --contractName=${contract_name} --contractPath=${contract_path} --keystore=${keystore} --pwd=${pwd}`
         
     console.log(deploy_command)
 
@@ -95,14 +111,6 @@ app.post('/:nodeip/:from/:to/:value', function (req, res) {
             res.json(body)
         }
     })
-})
-
-// Contract upload page
-app.get('/deploy', function (req, res) {
-    const deploy_web = fs.readFileSync('./deploy.html', {
-        encoding: 'utf8'
-    })
-    res.send(deploy_web)
 })
 
 app.listen(3000)

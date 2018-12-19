@@ -1,5 +1,24 @@
-<form action="/contract_upload" method="post" enctype="multipart/form-data">
-    <h2>提交合約</h2>
-    <input type="file" name="contract">
-    <input type="submit" value="提交">
-</form>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Deploy Contract</title>
+    <style>
+        h2 { text-align: center; }
+		div { width: 400px; margin: 10px auto; }
+		label{ width: 100%; display: inline-block; }
+		input, textarea{ width: 100%; display: inline-block; }
+		#send{ margin: 40px auto 0 auto; display: block; width: 50px; }
+	</style>
+</head>
+
+<body>
+    <h2>Deploy Contract</h2>
+    <form action="/contract_upload" method="post" enctype="multipart/form-data">
+        <div>
+            <input type="file" name="contract">
+            <input type="submit" value="Deploy">
+        </div>
+    </form>
+</body>

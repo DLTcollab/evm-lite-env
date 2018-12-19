@@ -3,13 +3,13 @@ const path = require('path')
 const JSONbig = require('json-bigint')
 const argv = require('minimist')(process.argv.slice(2))
 const prompt = require('prompt')
-const EVMBabbleClient = require('./evm-babble-client.js')
-const InteractContract = require('./interact.js')
+const EVMBabbleClient = require('../deploy/evm-babble-client.js')
+const InteractContract = require('../interact/interact.js')
 const Accounts = require('web3-eth-accounts')
 const fs = require('fs')
 
 const accounts = new Accounts('')
-const address = '0x0c539c7f3d69b8f4576fa8440cc55532f89e7a61'
+const address = '0xea52ba26cf57ba4f80c6084f2478aa9ff0c13a2f'
 const abi = '[{"constant":true,"inputs":[],"name":"checkGoalReached","outputs":[{"name":"reached","type":"bool"},{"name":"beneficiary","type":"address"},{"name":"goal","type":"uint256"},{"name":"amount","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"settle","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"contribute","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"inputs":[{"name":"goal","type":"uint256"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"beneficiary","type":"address"},{"indexed":false,"name":"funder","type":"address"},{"indexed":false,"name":"amount","type":"uint256"}],"name":"NewContribution","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"ok","type":"bool"}],"name":"Settlement","type":"event"}]'
 
 //------------------------------------------------------------------------------
@@ -19,27 +19,12 @@ const FgGreen = '\x1b[32m'
 const FgBlue = '\x1b[34m'
 const FgMagenta = '\x1b[35m'
 const FgCyan = '\x1b[36m'
-const FgWhite = '\x1b[37m'
 
 
 const log = function (color, text) {
     console.log(color + text + '\x1b[0m')
 }
-
-const step = function (message) {
-    log(FgWhite, '\n' + message)
-    return new Promise((resolve) => {
-        prompt.get('PRESS ENTER TO CONTINUE', function (err, res) {
-            resolve()
-        })
-    })
-}
-
-const space = function () {
-    console.log('\n')
-}
-
-//------------------------------------------------------------------------------
+//------------------------------------------------------------
 
 const sleep = function (time) {
     return new Promise((resolve) => setTimeout(resolve, time))
@@ -232,45 +217,38 @@ prompt.delimiter = ''
 
 init()
 
-    .then(() => step('STEP 1) Get ETH Accounts'))
     .then(() => {
-        space()
+        console.log('\nSTEP 1) Get ETH Accounts')
         return getControlledAccounts()
     })
 
-    .then(() => step('STEP 2) Contribute 499 wei from node 2'))
     .then(() => {
-        space()
+        console.log('\nSTEP 2) Contribute 499 wei from node 2')
         return contribute(_demoNodes[1], 499)
     })
 
-    .then(() => step('STEP 3) Check goal reached'))
     .then(() => {
-        space()
+        console.log('\nSTEP 3) Check goal reached')
         return checkGoalReached(_demoNodes[0])
     })
 
-    .then(() => step('STEP 4) Contribute 501 wei from node 3'))
     .then(() => {
-        space()
+        console.log('\nSTEP 4) Contribute 501 wei from node 3')
         return contribute(_demoNodes[2], 501)
     })
 
-    .then(() => step('STEP 5) Check goal reached'))
     .then(() => {
-        space()
+        console.log('\nSTEP 5) Check goal reached')
         return checkGoalReached(_demoNodes[0])
     })
 
-    .then(() => step('STEP 6) Settle'))
     .then(() => {
-        space()
+        console.log('\nSTEP 6) Settle')
         return settle(_demoNodes[0])
     })
 
-    .then(() => step('STEP 7) Check balances again'))
     .then(() => {
-        space()
+        console.log('\nSTEP 7) Check balances again')
         return getControlledAccounts()
     })
 
