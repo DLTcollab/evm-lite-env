@@ -19,7 +19,7 @@ echo "timeout = \"200ms\"" >> $PFILE
     
 for i in $(seq 0 $l) 
 do
-	dest=$DEST/node$i
-	cp $DEST/evml.toml $dest/evml.toml
-	echo "listen = \"$IPBASE$(($IPADD +$i)):1337\"" >> $dest/evml.toml
+    dest=$DEST/node$i
+    cp $DEST/evml.toml $dest/evml.toml
+    echo "listen = \"$IPBASE$(($IPADD +$i)):1337\"" >> $dest/evml.toml
 done

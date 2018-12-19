@@ -14,42 +14,40 @@ IPADD=${3:-0}
 DEST=${4:-"$PWD/conf"}
 PORT=${5:-1337}
 
-
 l=$((N-1))
 
 for i in $(seq 0 $l) 
 do
-	dest=$DEST/node$i/babble
-	mkdir -p $dest
-	echo "Generating key pair for node$i"
-	docker run \
-		-v $dest:/.babble \
-		--rm mosaicnetworks/babble:0.4.0 keygen
-	echo "$IPBASE$(($IPADD + $i)):$PORT" > $dest/addr
+    dest=$DEST/node$i/babble
+    mkdir -p $dest
+    echo "Generating key pair for node$i"
+    docker run \
+        -v $dest:/.babble \
+        --rm mosaicnetworks/babble:0.4.0 keygen
+    echo "$IPBASE$(($IPADD + $i)):$PORT" > $dest/addr
 done
 
 PFILE=$DEST/peers.json
 echo "[" > $PFILE 
 for i in $(seq 0 $l)
 do
-	dest=$DEST/node$i/babble
-	
-	com=","
-	if [[ $i == $l ]]; then 
-		com=""
-	fi
-	
-	printf "\t{\n" >> $PFILE
-	printf "\t\t\"NetAddr\":\"$(cat $dest/addr)\",\n" >> $PFILE
-	printf "\t\t\"PubKeyHex\":\"$(cat $dest/key.pub)\"\n" >> $PFILE
-	printf "\t}%s\n"  $com >> $PFILE
+    dest=$DEST/node$i/babble
+
+    com=","
+    if [[ $i == $l ]]; then
+        com=""
+    fi
+
+    printf "\t{\n" >> $PFILE
+    printf "\t\t\"NetAddr\":\"$(cat $dest/addr)\",\n" >> $PFILE
+    printf "\t\t\"PubKeyHex\":\"$(cat $dest/key.pub)\"\n" >> $PFILE
+    printf "\t}%s\n"  $com >> $PFILE
 
 done
 echo "]" >> $PFILE
 
 for i in $(seq 0 $l) 
 do
-	dest=$DEST/node$i/babble
-	cp $DEST/peers.json $dest/
+    dest=$DEST/node$i/babble
+    cp $DEST/peers.json $dest/
 done
-
