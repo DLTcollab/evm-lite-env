@@ -1,4 +1,4 @@
-# EVM Lite Environment
+# Lightweight Ethereum Development Environment
 Deploy environment for running Ethereum node with Babble consensus.
 
 ## Prerequisites
@@ -28,6 +28,3 @@ $ make stop
 ## Licensing
 This project is freely redistributable under the MIT License. Use of this source
 code is governed by a MIT-style license that can be found in the `LICENSE` file.
-
-This project utilizes parts of `EVM-LITE` library which is freely redistributable
-under MIT License that can be found in the `LICENSE.evm` file.
