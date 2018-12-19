@@ -22,11 +22,11 @@ variable "version" {
   directory containing the folders to be mounted as volumes in each container. 
   These volumes will be mounted in /.evm-lite where evml is configured to look 
   by default. For each node, there are files related to eth (accounts, genesis 
-  file, keys, etc), the consensus system (ex Babble peers.json, key), 
+  file, keys, etc), the consensus system (e.g. Babble peers.json, key),
   and a evml.toml file containing configuration for eth and the consensus 
   system.
 
-  ex: conf/
+  e.g. conf/
     node0
     │   ├── babble
     │   │   ├── peers.json
