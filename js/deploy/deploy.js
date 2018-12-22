@@ -82,7 +82,7 @@ const init = function () {
 
 const readIpsStore = function () {
     let fs = require('fs')
-    let contents = fs.readFileSync('../terraform/local/ips.dat', 'utf8')
+    let contents = fs.readFileSync('./terraform/local/ips.dat', 'utf8')
     let re = /(\d+\.\d+\.\d+\.\d+)/gm
     let found = contents.match(re)
 
