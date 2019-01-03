@@ -10,8 +10,8 @@ resource "docker_network" "private_network" {
   driver          = "bridge"
 
   ipam_config {
-    subnet  = "192.168.65.0/24"
-    gateway = "192.168.65.254"
+    subnet  = "172.77.5.0/24"
+    gateway = "172.77.5.254"
   }
 }
 

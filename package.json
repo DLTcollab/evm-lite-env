@@ -1,28 +1,22 @@
 {
-  "name": "evm_api",
-  "version": "1.0.0",
-  "main": "evm_api.js",
+  "name": "evm-lite-env",
+  "version": "0.1.0",
+  "description": "Deploy environment for running Lightweight Ethereum node with interchangeable consensus.",
+  "main": "index.js",
   "scripts": {
-    "start": "node js/server.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DLTcollab/evm-lite-env.git"
+  },
+  "author": "BiiLabs",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DLTcollab/evm-lite-env/issues"
+  },
+  "homepage": "https://github.com/DLTcollab/evm-lite-env#readme",
   "dependencies": {
-    "commander": "^2.19.0",
-    "express": "^4.16.4",
-    "json-bigint": "^0.2.3",
-    "minimist": "^1.2.0",
-    "multer": "^1.4.1",
-    "prompt": "^1.0.0",
-    "request": "^2.88.0",
-    "solc": "^0.4.18",
-    "typedarray-to-buffer": "^3.1.5",
-    "web3": "^0.19.0",
-    "web3-eth-accounts": "^1.0.0-beta.26"
-  },
-  "devDependencies": {
-    "eslint": "^5.10.0",
-    "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.14.0"
+    "evm-lite-lib": "^0.1.8"
   }
 }
