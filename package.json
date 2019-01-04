@@ -17,6 +17,6 @@
   },
   "homepage": "https://github.com/DLTcollab/evm-lite-env#readme",
   "dependencies": {
-    "evm-lite-lib": "^0.1.8"
+    "evm-lite-lib": "^0.1.9"
   }
 }
