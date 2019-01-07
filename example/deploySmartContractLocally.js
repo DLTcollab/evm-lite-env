@@ -25,7 +25,7 @@ const evmlc = new EVMLC(nodeIP , 8080, {
     gasPrice: 0
 });
 
-const keystore = new evmlib.Keystore(KeystorePath, 'keystore');
+const keystore = new KeyStore(KeystorePath, 'keystore');
 
 const contractFile = fs.readFileSync(contractPath, 'utf8');
 const contractName = ':' + rawContractname;
