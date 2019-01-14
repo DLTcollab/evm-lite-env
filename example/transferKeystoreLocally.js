@@ -1,46 +1,37 @@
 const evmlib = require('evm-lite-lib');
 
 // Transaction Addresses
-const from = '0xeb0d3811B16f792c119E6395141fa58f8409C597';
-const to = '0xeF5D1019e5B752E993BA17EC3aD2B021872Fb969';
-
-// Transaction Value
-const value = 200;
-
-// Config evm-lite IP
-const nodeIP = '127.0.0.1';
-
-// Data directory object
-const dataDirectory = new evmlib.DataDirectory('/Users/junwei.evmlc');
-
-// Password for keystore
-const password = 'superpassword';
+const from = '[from address]';
+const to = '[to address]';
+const value = 2000;
 
 // EVMLC object
-const evmlc = new evmlib.EVMLC(nodeIP, 8080, {
+const evmlc = new evmlib.EVMLC('127.0.0.1', 8080, {
     from,
     gas: 100000,
     gasPrice: 0
 });
 
-async function signTransactionLocally() {
+// Data directory object
+const dataDirectory = new evmlib.DataDirectory('[evmlc path]/.evmlc');
+const password = '[password]';
 
-    // Get keystore object from the keystore directory
-    // For the from address so we can decrypt and sign
-    const keystoreFile = await dataDirectory.keystore.get(from); 
+const signTransactionLocally = async () => {
+    // Get keystore object from the keystore directory and decrypt
+    const account = await dataDirectory.keystore.decrypt(from, password);
 
-    // Decrypt the v3JSONKeystore file so expose `sign` function
-    const decryptedAccount = evmlib.Account.decrypt(keystoreFile, password);
-
-    // Prepare a transaction
+    // Prepare a transaction with value of 2000
     const transaction = await evmlc.prepareTransfer(to, value);
 
-    // Sign transaction and return a new Transaction object
-    const signedTransaction = await decryptedAccount.signTransaction(transaction);
+    // Sign transaction and return the same Transaction object
+    await transaction.sign(account);
 
-    return await transaction.sendRaw(signedTransaction.rawTransaction);
-}
+    // Send transaction to node
+    await transaction.submit();
+
+    return transaction;
+};
 
 signTransactionLocally()
-    .then((txResponse) => console.log(txResponse))
+    .then((transaction) => console.log(transaction.hash))
     .catch((error) => console.log(error));

@@ -10,13 +10,18 @@
     "type": "git",
     "url": "git+https://github.com/DLTcollab/evm-lite-env.git"
   },
-  "author": "BiiLabs",
+  "author": "BiiLabs, Co. Ltd.`",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/DLTcollab/evm-lite-env/issues"
   },
   "homepage": "https://github.com/DLTcollab/evm-lite-env#readme",
+  "devDependencies": {
+    "eslint": "^5.12.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0"
+  },
   "dependencies": {
-    "evm-lite-lib": "^0.1.11"
+    "evm-lite-lib": "^0.1.15"
   }
 }
