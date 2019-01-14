@@ -3,7 +3,7 @@ const evmlib = require('evm-lite-lib');
 // Transaction Addresses
 const from = '[from address]';
 const to = '[to address]';
-const value = 2000;
+const value = '[value]';
 
 // EVMLC object
 const evmlc = new evmlib.EVMLC('127.0.0.1', 8080, {
