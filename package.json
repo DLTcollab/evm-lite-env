@@ -15,7 +15,7 @@
   "bugs": {
     "url": "https://github.com/DLTcollab/evm-lite-env/issues"
   },
-  "homepage": "https://github.com/DLTcollab/evm-lite-env#readme",
+  "homepage": "https://github.com/DLTcollab/evm-lite-env",
   "devDependencies": {
     "eslint": "^5.12.0",
     "eslint-config-airbnb-base": "^13.1.0",
