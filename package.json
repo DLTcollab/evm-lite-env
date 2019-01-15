@@ -1,7 +1,7 @@
 {
   "name": "evm-lite-env",
   "version": "0.1.0",
-  "description": "Deploy environment for running Lightweight Ethereum node with interchangeable consensus.",
+  "description": "Deploy environment for running Lightweight EVM node with interchangeable consensus.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
