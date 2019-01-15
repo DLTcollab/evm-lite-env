@@ -1,5 +1,5 @@
-# Lightweight Ethereum Development Environment
-Deploy environment for running Ethereum node with Babble consensus.
+# Lightweight EVM node Development Environment
+Deploy environment for running EVM node with Babble consensus.
 
 ## Prerequisites
 1. Install the Docker
