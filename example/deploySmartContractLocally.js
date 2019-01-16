@@ -39,7 +39,7 @@ const generateContract = async () => {
   const contract = await evmlc.generateContractFromABI(ABI, data);
 
   // Deploy and return contract with functions populated
-  const response = await contract.deploy(account, { parameters: [100000] });
+  const response = await contract.deploy(account, { parameters: [] });
 
   return response;
 };
