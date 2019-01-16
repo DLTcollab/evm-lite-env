@@ -1,10 +1,10 @@
-# Lightweight EVM node Development Environment
-Deploy environment for running EVM node with Babble consensus.
+# Lightweight EVM-based Smart Contract Development Environment
+An effective Ethereum Virtual Machine (EVM) based smart contract runtime without complete Ethereum dependency.
 
 ## Prerequisites
-1. Install the Docker
-2. Install the Terraform
-3. Initialize the Terraform
+1. Install Docker
+2. Install [Terraform](https://www.terraform.io/)
+3. Initialize Terraform in advance.
 ```shell
 $ cd evm-lite-env/terraform/local
 $ terraform init
@@ -20,14 +20,15 @@ $ make CONSENSUS=[consensus] NODES=[Number of nodes]
 Parameters :
 -   CONSENSUS : solo, babble
 -   NODES: number of nodes in the network
+
 ### Stop Docker
 ```bash
 $ make stop
 ```
 
-## Usage
+## Usage and Examples
 
-As well as the following description, you can take a look at our examples folder for more.
+This section describes basic usage for `evm-lite-env` and introduces the `example` directory.
 
 ### Transfer
 
