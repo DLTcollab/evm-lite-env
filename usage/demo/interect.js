@@ -33,9 +33,9 @@ const data = output.contracts[contractName].bytecode;
 
 const generateContract = async () => {
   // Generate contract object with ABI and data
-  const contract = await evmlc.generateContractFromABI(ABI, data);
+  const contract = await evmlc.loadContract(ABI, data);
 
-  const cfContract = await contract.setAddressAndPopulate(contractAddress);
+  const cfContract = await contract.setAddressAndPopulateFunctions(contractAddress);
 
   return cfContract;
 };
@@ -45,25 +45,17 @@ const accountDecrypt = async () => {
   // For the from address so we can decrypt and sign
   const account = await dataDirectory.keystore.decrypt(from, password);
 
-  console.log(account);
-
   return account;
 };
 
 const contribute = async (account, cfContract) => {
   const transaction = await cfContract.methods.contribute();
 
-  console.log(transaction);
-
   await transaction.value(200);
-
-  await transaction.nonce(32);
 
   await transaction.sign(account);
 
   const response = transaction.submit();
-
-  console.log(transaction);
 
   return response;
 };
@@ -74,6 +66,8 @@ const test = async () => {
   const cfContract = await generateContract();
 
   const response = await contribute(account, cfContract);
+
+  console.log(response);
 
   return response;
 };

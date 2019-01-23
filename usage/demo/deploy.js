@@ -36,7 +36,7 @@ const generateContract = async () => {
   const account = await dataDirectory.keystore.decrypt(from, password);
 
   // Generate contract object with ABI and data
-  const contract = await evmlc.generateContractFromABI(ABI, data);
+  const contract = await evmlc.loadContract(ABI, data);
 
   // Deploy and return contract with functions populated
   const response = await contract.deploy(account);
