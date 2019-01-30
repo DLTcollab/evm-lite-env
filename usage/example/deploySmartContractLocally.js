@@ -1,5 +1,5 @@
-const EVMLC = require('evm-lite-lib').EVMLC;
-const DataDirectory = require('evm-lite-lib').DataDirectory;
+const { EVMLC } = require('evm-lite-lib');
+const { DataDirectory } = require('evm-lite-lib');
 
 const solc = require('solc');
 const fs = require('fs');
