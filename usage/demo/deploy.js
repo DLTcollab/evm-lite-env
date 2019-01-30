@@ -1,5 +1,5 @@
-const EVMLC = require('evm-lite-lib').EVMLC;
-const DataDirectory = require('evm-lite-lib').DataDirectory;
+const { EVMLC } = require('evm-lite-lib');
+const { DataDirectory } = require('evm-lite-lib');
 
 const solc = require('solc');
 const fs = require('fs');
@@ -20,30 +20,36 @@ const password = 'password';
 
 
 // Contract Object
-const contractPath = 'usage/demo/solidity/CrowdFunding.sol';
 const rawContractName = 'CrowdFunding';
+const contractPath = 'usage/demo/solidity/CrowdFunding.sol';
 
-const contractFile = fs.readFileSync(contractPath, 'utf8');
-const contractName = `:${rawContractName}`;
+// Get keystore object from the keystore directory
+// For the from address so we can decrypt and sign
+const accountDecrypt = async () => {
+  const account = await dataDirectory.keystore.decryptAccount(from, password);
+  return account;
+};
 
-const output = solc.compile(contractFile, 1);
-const ABI = JSON.parse(output.contracts[contractName].interface);
-const data = output.contracts[contractName].bytecode;
+// Generate contract object with ABI and data
+const loadContract = async () => {
+  const contractFile = fs.readFileSync(contractPath, 'utf8');
+  const contractName = `:${rawContractName}`;
+  const compiledOutput = solc.compile(contractFile, 1);
+  const data = compiledOutput.contracts[contractName].bytecode;
+  const ABI = JSON.parse(compiledOutput.contracts[contractName].interface);
+  const contract = await evmlc.loadContract(ABI, {
+    data,
+  });
+  return contract;
+};
 
-const generateContract = async () => {
-  // Get keystore object from the keystore directory
-  // For the from address so we can decrypt and sign
-  const account = await dataDirectory.keystore.decrypt(from, password);
-
-  // Generate contract object with ABI and data
-  const contract = await evmlc.loadContract(ABI, data);
-
-  // Deploy and return contract with functions populated
+const deployContract = async () => {
+  const account = await accountDecrypt();
+  const contract = await loadContract();
   const response = await contract.deploy(account);
-
   return response;
 };
 
-generateContract()
-  .then(contract => console.log(contract.options.address))
+deployContract()
+  .then(res => console.log(res))
   .catch(error => console.log(error));
