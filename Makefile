@@ -9,7 +9,7 @@ IPADD = 0
 up: conf start
 
 conf:
-	docker pull -a capjupiter/evm-lite
+	docker pull -a mosaicnetworks/evm-lite
 	$(MAKE) -C conf/$(CONSENSUS) conf NODES=$(NODES) IPBASE=$(IPBASE) IPADD=$(IPADD)
 
 start:
