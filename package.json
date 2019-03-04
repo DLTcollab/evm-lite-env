@@ -17,13 +17,14 @@
     "url": "https://github.com/DLTcollab/evm-lite-env/issues"
   },
   "homepage": "https://github.com/DLTcollab/evm-lite-env",
+  "dependencies": {
+    "evm-lite-lib": "^0.2.14",
+    "solc": "^0.4.25",
+    "web3-eth-accounts": "^1.0.0-beta.37"
+  },
   "devDependencies": {
     "eslint": "^5.12.1",
     "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.14.0"
-  },
-  "dependencies": {
-    "evm-lite-lib": "^0.1.22",
-    "solc": "^0.4.25"
+    "eslint-plugin-import": "^2.15.0"
   }
 }
