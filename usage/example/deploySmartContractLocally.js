@@ -18,15 +18,14 @@ const evmlc = new EVMLC('127.0.0.1', 8080, {
 const dataDirectory = new DataDirectory('');
 const password = '';
 
-
 // Contract Object
-const contractPath = '';
 const rawContractName = '';
+const contractPath = '';
 
 // Get keystore object from the keystore directory
 // For the from address so we can decrypt and sign
 const accountDecrypt = async () => {
-  const account = await dataDirectory.keystore.decryptAccount(from, password);
+  const account = await dataDirectory.keystore.decryptAccount(evmlc.defaultFrom, password);
   return account;
 };
 
@@ -35,10 +34,10 @@ const loadContract = async () => {
   const contractFile = fs.readFileSync(contractPath, 'utf8');
   const contractName = `:${rawContractName}`;
   const compiledOutput = solc.compile(contractFile, 1);
-  const data = compiledOutput.contracts[contractName].bytecode;
-  const ABI = JSON.parse(compiledOutput.contracts[contractName].interface);
-  const contract = await evmlc.loadContract(ABI, {
-    data,
+  const bytecode = compiledOutput.contracts[`:${contractName}`].bytecode;
+  const ABI = JSON.parse(compiledOutput.contracts[`:${contractName}`].interface);
+  const contract = await evmlc.contracts.load(ABI, {
+    data: bytecode,
   });
   return contract;
 };
