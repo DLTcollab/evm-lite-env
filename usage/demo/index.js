@@ -9,13 +9,15 @@ let evmlc;
 let contract;
 let account;
 
+const directory = './evmlc';
+
 const errorLog = (text) => {
   console.log(`\x1b[31m${text}\x1b[0m`);
 };
 
 const initEVMConnection = async () => {
   try {
-    evmlc = new EVMLC('node0.capjupiter.com', 8080, {
+    evmlc = new EVMLC('node0.puyuma.org', 8080, {
       from: '0X3F9D41ECEA757FC4E2B44BE3B38A788DE2F11AD7',
       gas: 100000000,
       gasPrice: 0,
@@ -26,7 +28,7 @@ const initEVMConnection = async () => {
 };
 
 const assignEvmlcDirectory = () => {
-  const evmlcDirectory = new DataDirectory('./evmlc');
+  const evmlcDirectory = new DataDirectory(directory);
   return evmlcDirectory;
 };
 
@@ -103,7 +105,7 @@ const demo = async () => {
   console.log(
     'Step 1 ) \n'
     + 'At the very beginning, we specify the host of the EVM-Lite and our default account.\n\n'
-    + `EVM-Lite Address : ${evmlc.host}\n`
+    + `EVM-Lite Address : ${evmlc.host}:${evmlc.port}\n`
     + `Default Account : ${evmlc.defaultFrom}\n`,
   );
 
@@ -113,7 +115,7 @@ const demo = async () => {
     'Step 2 ) \n'
     + 'The private keys reside directly on our own device, so we need to specify \n'
     + 'the location in order to decrypt the account later.\n\n'
-    + `Default EVMLC Location : ${os.homedir()}/.evmlc \n`,
+    + `Default EVMLC Location : ${directory}\n`,
   );
 
   // Step3
@@ -133,9 +135,9 @@ const demo = async () => {
   console.log(
     '\n'
     + 'Step 4 ) \n'
-    + 'Compiled the Claimhub SmartContract. \n'
+    + 'Compiled the Claimhub Smart Contract. \n'
     + 'The contract was written in the high-level Solidity language which compiles \n'
-    + 'down to EVM bytecode.'
+    + 'down to EVM bytecode.\n'
     + 'Smart Contract Object : \n',
   );
   console.log(contract);
@@ -145,10 +147,10 @@ const demo = async () => {
   console.log(
     '\n'
   + 'Step 5 ) \n'
-  + 'To deploy the SmartContract we created an EVM transaction \n'
-  + 'with a data field containing the bytecode. After going through consensus, the \n'
-  + 'transaction is applied on every node, so every participant will run a copy of \n'
-  + 'the same code with the same data.\n'
+  + 'To deploy the Smart Contract we created an EVM transaction with a data field\n'
+  + 'containing the bytecode. After going through consensus, the transaction is\n'
+  + 'applied on every node, so every participant will run a copy of the same code \n'
+  + 'with the same data.\n'
   + 'Receipt: \n',
   );
   console.log(receipt.receipt);
@@ -160,7 +162,7 @@ const demo = async () => {
   console.log(
     '\n'
   + 'Step 6 ) \n'
-  + 'We created an EVM transaction to call the setClaim method of the SmartContract. \n'
+  + 'We created an EVM transaction to call the setClaim method of the Smart Contract. \n'
   + 'This will create a combination of claims in the contract, \n'
   + 'in this claim will explain the ownership of the claim and the corresponding content.\n'
   + 'Transaction Response : \n',
