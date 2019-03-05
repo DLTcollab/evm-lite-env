@@ -1,9 +1,5 @@
 ### Usage
 
-### Prerequisites
-
-1. Install [Node.js](https://nodejs.org/en/)
-
 #### Transfer
 
 ##### 1. Init the transaction addresses.

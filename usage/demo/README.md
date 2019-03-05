@@ -1,9 +1,9 @@
 ### Demo
 
-### Prerequisites
+Here we provide a few scripts to demonstrate how to interact with evm-lite nodes.
+You might need to install NodeJS and dependencies first.
 
-1. Install [Node.js](https://nodejs.org/en/)
-
+### Getting Started
 ```
 $ node index.js
 ```

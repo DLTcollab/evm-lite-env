@@ -35,6 +35,14 @@ $ make stop
 
 ### Usage and Examples
 
+#### Prerequisites
+
+1. Install [Node.js](https://nodejs.org/en/)
+2. Install the dependencies
+```
+npm install
+```
+
 This section please refer to the `usage` folder..
 
 ### Coding style 

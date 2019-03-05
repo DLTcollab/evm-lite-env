@@ -26,9 +26,7 @@ const initEVMConnection = async () => {
 };
 
 const assignEvmlcDirectory = () => {
-  const evmlcDirectory = new DataDirectory(
-    path.join(os.homedir(), '.evmlc'),
-  );
+  const evmlcDirectory = new DataDirectory('./evmlc');
   return evmlcDirectory;
 };
 
@@ -104,7 +102,7 @@ const demo = async () => {
   initEVMConnection();
   console.log(
     'Step 1 ) \n'
-    + 'At the very beginning, we specify the host of the EVM-Lite and our default account.\n'
+    + 'At the very beginning, we specify the host of the EVM-Lite and our default account.\n\n'
     + `EVM-Lite Address : ${evmlc.host}\n`
     + `Default Account : ${evmlc.defaultFrom}\n`,
   );
@@ -114,8 +112,8 @@ const demo = async () => {
   console.log(
     'Step 2 ) \n'
     + 'The private keys reside directly on our own device, so we need to specify \n'
-    + 'the location in order to decrypt the account later.\n'
-    + `Default EVMLC Location : ${os.homedir()}/.evmlc\n`,
+    + 'the location in order to decrypt the account later.\n\n'
+    + `Default EVMLC Location : ${os.homedir()}/.evmlc \n`,
   );
 
   // Step3
@@ -124,7 +122,7 @@ const demo = async () => {
   console.log(
     'Step 3 ) \n'
     + 'Get account from keystore and decrypt the account.\n'
-    + 'Decrypt Account :',
+    + 'Decrypt Account : \n',
   );
   console.log(account);
 
@@ -138,7 +136,7 @@ const demo = async () => {
     + 'Compiled the Claimhub SmartContract. \n'
     + 'The contract was written in the high-level Solidity language which compiles \n'
     + 'down to EVM bytecode.'
-    + 'Smart Contract Object : ',
+    + 'Smart Contract Object : \n',
   );
   console.log(contract);
 
@@ -151,7 +149,7 @@ const demo = async () => {
   + 'with a data field containing the bytecode. After going through consensus, the \n'
   + 'transaction is applied on every node, so every participant will run a copy of \n'
   + 'the same code with the same data.\n'
-  + 'Receipt: ',
+  + 'Receipt: \n',
   );
   console.log(receipt.receipt);
 
@@ -165,7 +163,7 @@ const demo = async () => {
   + 'We created an EVM transaction to call the setClaim method of the SmartContract. \n'
   + 'This will create a combination of claims in the contract, \n'
   + 'in this claim will explain the ownership of the claim and the corresponding content.\n'
-  + 'Transaction Response : ',
+  + 'Transaction Response : \n',
   );
   console.log(setResponse);
 
@@ -174,7 +172,10 @@ const demo = async () => {
   console.log(
     '\n'
   + 'Step 7 ) \n'
-  + `Junwei's claim content : ${getResponse}`,
+  + 'We have set the claim content corresponding to the owner in the previous step. \n'
+  + 'Now we are going to retrieve the content of this owner from EVM-Lite. \n'
+  + 'We just need to call the getClaim method and fill in the owner who we want to get. \n\n'
+  + `Junwei's claim content : ${getResponse}\n`,
   );
 };
 
