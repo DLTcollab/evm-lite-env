@@ -22,7 +22,7 @@ resource "docker_container" "evm-lite" {
   name     = "node${count.index}"
   hostname = "node${count.index}"
 
-  image = "capjupiter/evm-lite:${var.version}"
+  image = "mosaicnetworks/evm-lite:${var.version}"
 
   networks = ["${docker_network.private_network.name}"]
 
